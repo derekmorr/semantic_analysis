@@ -1,0 +1,44 @@
+import os
+import logging
+import pdf_converter
+import pickle
+import re
+import spacy
+from spacy.lang.en import English
+import tensorflow_hub as hub
+import Timer as t
+
+def convert(file_path):
+    try:
+        with open("sentences.txt", 'rb') as f:
+            sentences = pickle.load(f)
+    except:
+        pdf_texts = [] 
+
+        timer_convert = t.Timer()
+        print(f'PDF conversion start: {timer_convert}.')
+        for filename in os.listdir(file_path):
+            if (".pdf" in filename):
+                print("Converting " + filename + " to pdf.") 
+                pdf_texts.append(pdf_converter.convert(file_path + "/" + filename))
+        print(f'PDF conversion end: {timer_convert}.')
+
+        timer_spacy = t.Timer()
+        print(f'Spacy load start: {timer_spacy}.')
+        # python -m spacy download en_core_web_md you will need to install this on first load
+        nlp = spacy.load('en_core_web_md')
+        logging.getLogger('tensorflow').disabled = True #OPTIONAL - to disable outputs from Tensorflow
+        timer_convert = t.Timer()
+        print(f'Spacy load end: {timer_spacy}.')
+
+        timer_nlp = t.Timer()
+        print(f'Timer nlp start: {timer_nlp}.')
+        # NEED TO CHANGE THIS LATER, INDEXING FIRST PDF ONLY
+        text = pdf_texts[0].lower().replace('\n', ' ').replace('\t', ' ').replace('\xa0',' ')
+        text = ' '.join(text.split())
+        doc = nlp(text)
+        print(f'Timer nlp end: {timer_nlp}.')
+        with open("sentences.txt", 'wb') as f:
+            pickle.dump(sentences, f)
+        
+    return sentences
