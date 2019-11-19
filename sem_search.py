@@ -40,10 +40,9 @@ print(f'Total start is {timer_total}.')
 sentences = pdf_convert.convert(FLAGS.pdf_dir)
 
 tf_sentences = tf.reshape(sentences, [-1])
-
+os.environ['TFHUB_CACHE_DIR'] = '/Users/singhcpt/dev/semantic_analysis/tf_cache'
 url = "https://tfhub.dev/google/elmo/2"
 embed = hub.Module(url)
-
 timer_e = t.Timer()
 print(f'Embedding start is {timer_e}.')
 embeddings = embed(
@@ -85,14 +84,13 @@ print(f'Sess 2 start is {timer_sv}.')
 with tf.Session() as sess:
   sess.run(tf.global_variables_initializer())
   sess.run(tf.tables_initializer())
-  # search_vect = sess.run(embeddings2)
-  # print(f'Time elapsed is {timer_sv}.')
+  search_vect = sess.run(embeddings2)
+  print(f'Time elapsed is {timer_sv}.')
   try:
     search_vect = np.load('/Users/singhcpt/dev/semantic_analysis/search_vec.npy')
   except: 
     search_vect = sess.run(embeddings2)
     np.save('/Users/singhcpt/dev/semantic_analysis/search_vec.npy', search_vect)
- 
 print(f'Sess 2 end is {timer_sv}.')
 
 
@@ -101,8 +99,8 @@ output = ""
 x = 0
 
 print("\nRESULTS:\n")
-
 for i,j in cosine_similarities.nlargest(int(results_returned)).iteritems():
   x += 1
+  print(i)
   print("RESULT " + str(x) + ": " + sentences[i] + "\n")
 print(f'Total end is {timer_total}.')

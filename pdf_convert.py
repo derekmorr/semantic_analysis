@@ -14,12 +14,13 @@ def convert(file_path):
             sentences = pickle.load(f)
     except:
         pdf_texts = [] 
-
+        sentences = []
         timer_convert = t.Timer()
         print(f'PDF conversion start: {timer_convert}.')
         for filename in os.listdir(file_path):
             if (".pdf" in filename):
                 print("Converting " + filename + " to pdf.") 
+                print(file_path + "/" + filename)
                 pdf_texts.append(pdf_converter.convert(file_path + "/" + filename))
         print(f'PDF conversion end: {timer_convert}.')
 
@@ -34,11 +35,20 @@ def convert(file_path):
         timer_nlp = t.Timer()
         print(f'Timer nlp start: {timer_nlp}.')
         # NEED TO CHANGE THIS LATER, INDEXING FIRST PDF ONLY
-        text = pdf_texts[0].lower().replace('\n', ' ').replace('\t', ' ').replace('\xa0',' ')
+        text = ""
+        for pdf_text in pdf_texts:
+            text += pdf_text.lower().replace('\n', ' ').replace('\t', ' ').replace('\xa0',' ')
+            text += "\n"
         text = ' '.join(text.split())
+        nlp.max_length = 1000000000
         doc = nlp(text)
+
+        for i in doc.sents:
+            if len(i) > 1:
+                sentences.append(i.string.strip())
+
         print(f'Timer nlp end: {timer_nlp}.')
         with open("sentences.txt", 'wb') as f:
             pickle.dump(sentences, f)
-        
+    print("LENGTH: " + str(len(sentences)))
     return sentences
