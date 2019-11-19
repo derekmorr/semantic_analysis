@@ -34,7 +34,6 @@ def convert(file_path):
 
         timer_nlp = t.Timer()
         print(f'Timer nlp start: {timer_nlp}.')
-        # NEED TO CHANGE THIS LATER, INDEXING FIRST PDF ONLY
         text = ""
         for pdf_text in pdf_texts:
             text += pdf_text.lower().replace('\n', ' ').replace('\t', ' ').replace('\xa0',' ')
