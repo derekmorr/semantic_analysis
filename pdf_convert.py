@@ -33,7 +33,6 @@ def convert(file_path):
         print(f'Spacy load end: {timer_spacy}.')
 
         timer_nlp = t.Timer()
-        print(f'Timer nlp start: {timer_nlp}.')
         text = ""
         for pdf_text in pdf_texts:
             text += pdf_text.lower().replace('\n', ' ').replace('\t', ' ').replace('\xa0',' ')
@@ -46,8 +45,7 @@ def convert(file_path):
             if len(i) > 1:
                 sentences.append(i.string.strip())
 
-        print(f'Timer nlp end: {timer_nlp}.')
         with open("sentences.txt", 'wb') as f:
             pickle.dump(sentences, f)
-    print("LENGTH: " + str(len(sentences)))
+
     return sentences
