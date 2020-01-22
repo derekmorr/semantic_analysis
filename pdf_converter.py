@@ -1,7 +1,7 @@
 from io import StringIO
 import sys
 
-sys.path.append("/usr/home/username/pdfminer")
+# sys.path.append("/usr/home/username/pdfminer")
 
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import TextConverter
