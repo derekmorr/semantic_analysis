@@ -31,6 +31,14 @@ parser.add_argument(
     help='Number of results to return'
 )
 
+parser.add_argument(
+    '--pdf_embed_dir',
+    type=str,
+    default='',
+    help='Path to PDF embedding file'
+)
+
+
 FLAGS, unparsed = parser.parse_known_args()
 
 timer_total = t.Timer()
@@ -40,7 +48,7 @@ print(f'Total start is {timer_total}.')
 sentences = pdf_convert.convert(FLAGS.pdf_dir)
 
 tf_sentences = tf.reshape(sentences, [-1])
-os.environ['TFHUB_CACHE_DIR'] = '/Users/singhcpt/dev/semantic_analysis/tf_cache'
+#os.environ['TFHUB_CACHE_DIR'] = '/Users/singhcpt/dev/semantic_analysis/tf_cache'
 url = "https://tfhub.dev/google/elmo/2"
 embed = hub.Module(url)
 timer_e = t.Timer()
@@ -60,10 +68,10 @@ with tf.Session() as sess:
   sess.run(tf.global_variables_initializer())
   sess.run(tf.tables_initializer())
   try:
-    x = np.load('/Users/singhcpt/dev/semantic_analysis/x.npy')
+    x = np.load(FLAGS.pdf_embed_dir)
   except: 
     x = sess.run(embeddings)
-    np.save('/Users/singhcpt/dev/semantic_analysis/x.npy', x)
+    np.save(FLAGS.pdf_embed_dir, x)
 
 from sklearn.metrics.pairwise import cosine_similarity
 

@@ -22,6 +22,13 @@ def convert(file_path):
                 print("Converting " + filename + " to pdf.") 
                 print(file_path + "/" + filename)
                 pdf_texts.append(pdf_converter.convert(file_path + "/" + filename))
+            if (".txt" in filename):
+                print("Converting " + filename + " to array.")
+                print(file_path + "/" + filename)
+                with open(file_path + "/" + filename) as f:
+                    for line in f:
+                        sentences.append(line)
+                return sentences
         print(f'PDF conversion end: {timer_convert}.')
 
         timer_spacy = t.Timer()

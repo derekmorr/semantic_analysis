@@ -1,7 +1,7 @@
 from io import StringIO
 import sys
 
-sys.path.append("/usr/home/username/pdfminer")
+#sys.path.append("/usr/home/username/pdfminer")
 
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import TextConverter
@@ -42,6 +42,7 @@ for filename in os.listdir(COMPENDIUM_FOLDER_PATH):
     if (".pdf" in filename):
       pdf_texts.append(convert(COMPENDIUM_FOLDER_PATH + "/" + filename))
 
+# from here on is what we need on the VM
 import numpy as np
 import pandas as pd
 import tensorflow as tf
