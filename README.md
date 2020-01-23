@@ -3,7 +3,7 @@ Custom implementation of TF-Hub's Universal Encoder to perform semantic searches
 
 Run the following command on your first installation of spacy:
 
-`!python -m spacy download en_core_web_md #you will need to install this on first load`
+`!python -m spacy download en_core_web_md`
 
 To run the script, run the following command:
 
