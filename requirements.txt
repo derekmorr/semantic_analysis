@@ -1,0 +1,6 @@
+tensorflow==1.14.0
+tensorflow_hub==0.7.0
+scikit-learn==0.22.1
+spacy==2.2.3
+pdfminer==20191125
+pandas==0.25.3
