@@ -48,7 +48,6 @@ print(f'Total start is {timer_total}.')
 sentences = pdf_convert.convert(FLAGS.pdf_dir)
 
 tf_sentences = tf.reshape(sentences, [-1])
-#os.environ['TFHUB_CACHE_DIR'] = '/Users/singhcpt/dev/semantic_analysis/tf_cache'
 url = "https://tfhub.dev/google/elmo/2"
 embed = hub.Module(url)
 timer_e = t.Timer()
@@ -58,9 +57,9 @@ embeddings = embed(
             signature="default",
             as_dict=True)["default"]
 
-search_string = FLAGS.search_string #@param {type:"string"}
+search_string = FLAGS.search_string 
 print("SEARCH: " + search_string)
-results_returned = str(FLAGS.num_results) #@param [1, 2, 3]
+results_returned = str(FLAGS.num_results)
 
 timer_x = t.Timer()
 
