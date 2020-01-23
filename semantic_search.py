@@ -45,7 +45,7 @@ for filename in os.listdir(COMPENDIUM_FOLDER_PATH):
 nlp = spacy.load('en_core_web_md')
 logging.getLogger('tensorflow').disabled = True #OPTIONAL - to disable outputs from Tensorflow
 
-url = "https://tfhub.dev/google/elmo/2"
+url = "https://tfhub.dev/google/elmo/3"
 embed = hub.Module(url)
 
 text = pdf_texts[0].lower().replace('\n', ' ').replace('\t', ' ').replace('\xa0', ' ')

@@ -48,7 +48,7 @@ print(f'Total start is {timer_total}.')
 sentences = pdf_convert.convert(FLAGS.pdf_dir)
 
 tf_sentences = tf.reshape(sentences, [-1])
-url = "https://tfhub.dev/google/elmo/2"
+url = "https://tfhub.dev/google/elmo/3"
 embed = hub.Module(url)
 timer_e = t.Timer()
 
