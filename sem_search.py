@@ -1,9 +1,8 @@
 import argparse
 import numpy as np
-import pdf_convert
-import os
 import pandas as pd
-from sklearn import preprocessing
+import pdf_convert
+from sklearn.metrics.pairwise import cosine_similarity
 import tensorflow as tf
 import tensorflow_hub as hub
 import Timer as t
@@ -53,26 +52,24 @@ embed = hub.Module(url)
 timer_e = t.Timer()
 
 embeddings = embed(
-            tf_sentences,
-            signature="default",
-            as_dict=True)["default"]
+    tf_sentences,
+    signature="default",
+    as_dict=True)["default"]
 
-search_string = FLAGS.search_string 
+search_string = FLAGS.search_string
 print("SEARCH: " + search_string)
 results_returned = str(FLAGS.num_results)
 
 timer_x = t.Timer()
 
 with tf.Session() as sess:
-  sess.run(tf.global_variables_initializer())
-  sess.run(tf.tables_initializer())
-  try:
-    x = np.load(FLAGS.pdf_embed_dir)
-  except: 
-    x = sess.run(embeddings)
-    np.save(FLAGS.pdf_embed_dir, x)
-
-from sklearn.metrics.pairwise import cosine_similarity
+    sess.run(tf.global_variables_initializer())
+    sess.run(tf.tables_initializer())
+    try:
+        x = np.load(FLAGS.pdf_embed_dir)
+    except:
+        x = sess.run(embeddings)
+        np.save(FLAGS.pdf_embed_dir, x)
 
 embeddings2 = embed(
     [search_string],
@@ -81,17 +78,17 @@ embeddings2 = embed(
 
 timer_sv = t.Timer()
 with tf.Session() as sess:
-  sess.run(tf.global_variables_initializer())
-  sess.run(tf.tables_initializer())
-  search_vect = sess.run(embeddings2)
+    sess.run(tf.global_variables_initializer())
+    sess.run(tf.tables_initializer())
+    search_vect = sess.run(embeddings2)
 
 cosine_similarities = pd.Series(cosine_similarity(search_vect, x).flatten())
 output = ""
 x = 0
 
 print("\nRESULTS:\n")
-for i,j in cosine_similarities.nlargest(int(results_returned)).iteritems():
-  x += 1
-  print("RESULT " + str(x) + ": " + sentences[i] + "\n")
-  
+for i, j in cosine_similarities.nlargest(int(results_returned)).iteritems():
+    x += 1
+    print("RESULT " + str(x) + ": " + sentences[i] + "\n")
+
 print(f'Total end is {timer_total}.')
